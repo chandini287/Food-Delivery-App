@@ -1,0 +1,219 @@
+.restaurant-details {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.back-button {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: #4CAF50;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.back-button:hover {
+  color: #45a049;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #4CAF50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error {
+  color: #dc3545;
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8d7da;
+  border-radius: 4px;
+  margin: 2rem 0;
+}
+
+.restaurant-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.restaurant-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.restaurant-info h1 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.cuisine {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.stars {
+  color: #ffd700;
+}
+
+.delivery-time, .min-order {
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: #666;
+  line-height: 1.6;
+}
+
+.menu-section {
+  margin-top: 3rem;
+}
+
+.menu-section h2 {
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.menu-item {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.menu-item:hover {
+  transform: translateY(-5px);
+}
+
+.food-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.food-info {
+  padding: 1rem;
+}
+
+.food-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.food-info .description {
+  color: #666;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.price-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-weight: bold;
+  color: #4CAF50;
+  font-size: 1.2rem;
+}
+
+.cart-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.add-to-cart {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+  background-color: #45a049;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  padding: 0.25rem;
+}
+
+.quantity-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.quantity-btn:hover {
+  background-color: #45a049;
+}
+
+.quantity {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 500;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .restaurant-header {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+} 

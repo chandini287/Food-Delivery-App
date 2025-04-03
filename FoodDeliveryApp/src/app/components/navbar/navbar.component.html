@@ -1,0 +1,35 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/">FoodDelivery</a>
+  </div>
+  
+  <div class="nav-links">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <i class="fas fa-home"></i> Home
+    </a>
+    
+    <a routerLink="/restaurants" routerLinkActive="active">
+      <i class="fas fa-utensils"></i> Restaurants
+    </a>
+
+    <a routerLink="/order" routerLinkActive="active">
+      <i class="fas fa-shopping-cart"></i> Cart
+    </a>
+
+    <div class="auth-links">
+      <a routerLink="/login" routerLinkActive="active" class="login-link">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </a>
+      <a routerLink="/register" routerLinkActive="active" class="register-link">
+        <i class="fas fa-user-plus"></i> Register
+      </a>
+      
+      <ng-container *ngIf="authService.isAuthenticated()">
+        <span class="welcome-text">Welcome, User #{{ authService.getUserId() }}</span>
+        <a (click)="logout()" class="logout-link">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </ng-container>
+    </div>
+  </div>
+</nav>

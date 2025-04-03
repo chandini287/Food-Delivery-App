@@ -1,0 +1,76 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>Create Account</h2>
+    <p class="subtitle">Join our food delivery community</p>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input 
+          type="text" 
+          id="username" 
+          formControlName="username" 
+          [class.error]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+          placeholder="Choose a username">
+        <div class="error-message" *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+          {{ getErrorMessage('username') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email" 
+          [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+          placeholder="Enter your email">
+        <div class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          {{ getErrorMessage('email') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password" 
+          [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+          placeholder="Create a password">
+        <div class="error-message" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          {{ getErrorMessage('password') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          formControlName="confirmPassword" 
+          [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+          placeholder="Confirm your password">
+        <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+          {{ getErrorMessage('confirmPassword') }}
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid" class="submit-button">
+        Create Account
+      </button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a routerLink="/login">Login here</a>
+    </div>
+  </div>
+</div>

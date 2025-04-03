@@ -1,0 +1,58 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Welcome Back</h2>
+    <p class="subtitle">Sign in to your account</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email" 
+          [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+          placeholder="Enter your email">
+        <div class="error-message" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          {{ getErrorMessage('email') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password" 
+          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          placeholder="Enter your password">
+        <div class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          {{ getErrorMessage('password') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="remember-me">
+          <input type="checkbox" id="rememberMe" formControlName="rememberMe">
+          <label for="rememberMe">Remember me</label>
+        </div>
+        <a href="#" class="forgot-password">Forgot password?</a>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid" class="submit-button">
+        Sign In
+      </button>
+    </form>
+
+    <div class="register-link">
+      Don't have an account? <a routerLink="/register">Register here</a>
+    </div>
+  </div>
+</div>

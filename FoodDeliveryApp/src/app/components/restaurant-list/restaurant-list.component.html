@@ -1,0 +1,28 @@
+<div class="restaurant-list">
+  <h1>Our Restaurants</h1>
+  
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading restaurants...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="restaurant-grid">
+    <div *ngFor="let restaurant of restaurants" class="restaurant-card" [routerLink]="['/restaurant', restaurant.id]">
+      <img [src]="restaurant.imageUrl" [alt]="restaurant.name" class="restaurant-image">
+      <div class="restaurant-info">
+        <h2>{{ restaurant.name }}</h2>
+        <p class="cuisine">{{ restaurant.cuisine }}</p>
+        <div class="rating">
+          <span class="stars">★</span>
+          <span>{{ restaurant.rating }}</span>
+        </div>
+        <p class="delivery-time">Delivery in {{ restaurant.deliveryTime }}</p>
+        <p class="minimum-order">Min. order: ${{ restaurant.minimumOrder }}</p>
+      </div>
+    </div>
+  </div>
+</div>

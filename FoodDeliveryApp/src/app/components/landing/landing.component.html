@@ -1,0 +1,71 @@
+<div class="landing-container">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Delicious Food Delivered To Your Doorstep</h1>
+      <p>Order from your favorite restaurants and get it delivered in minutes</p>
+      <a routerLink="/restaurants" class="cta-button">Browse Restaurants</a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <h2>Why Choose Us</h2>
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let feature of features">
+          <i class="fas {{ feature.icon }}"></i>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2>How It Works</h2>
+      <div class="steps-grid">
+        <div class="step" *ngFor="let step of steps">
+          <div class="step-number">{{ step.number }}</div>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Features Section -->
+  <section class="app-features">
+    <div class="container">
+      <h2>Download Our App</h2>
+      <div class="app-features-grid">
+        <div class="app-feature">
+          <i class="fas fa-mobile-alt"></i>
+          <h3>Easy Ordering</h3>
+          <p>Order food with just a few taps on your phone</p>
+        </div>
+        <div class="app-feature">
+          <i class="fas fa-bell"></i>
+          <h3>Order Updates</h3>
+          <p>Get real-time notifications about your order status</p>
+        </div>
+        <div class="app-feature">
+          <i class="fas fa-star"></i>
+          <h3>Rewards Program</h3>
+          <p>Earn points with every order and get exclusive discounts</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <h2>Ready to Order?</h2>
+      <p>Join thousands of satisfied customers</p>
+      <a routerLink="/register" class="cta-button">Sign Up Now</a>
+    </div>
+  </section>
+</div> 

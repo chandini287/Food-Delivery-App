@@ -1,0 +1,103 @@
+<div class="order-container">
+  <div class="order-header">
+    <h1>Place Your Order</h1>
+    <p>Please review your order and provide delivery details</p>
+  </div>
+
+  <div class="order-content">
+    <!-- Order Summary -->
+    <div class="order-summary">
+      <h2>Order Summary</h2>
+      <div class="cart-items">
+        <div *ngFor="let item of cartItems" class="cart-item">
+          <img [src]="item.imageUrl" [alt]="item.name" class="item-image">
+          <div class="item-details">
+            <h3>{{ item.name }}</h3>
+            <p class="restaurant">{{ item.restaurantName }}</p>
+            <div class="item-price">
+              <span class="quantity">x{{ item.quantity }}</span>
+              <span class="price">${{ (item.price * item.quantity).toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-totals">
+        <div class="total-row">
+          <span>Subtotal</span>
+          <span>${{ getTotal().toFixed(2) }}</span>
+        </div>
+        <div class="total-row">
+          <span>Delivery Fee</span>
+          <span>${{ getDeliveryFee().toFixed(2) }}</span>
+        </div>
+        <div class="total-row final-total">
+          <span>Total</span>
+          <span>${{ getFinalTotal().toFixed(2) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delivery Form -->
+    <div class="delivery-form">
+      <h2>Delivery Details</h2>
+      <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="deliveryAddress">Delivery Address</label>
+          <textarea
+            id="deliveryAddress"
+            formControlName="deliveryAddress"
+            placeholder="Enter your complete delivery address"
+            rows="3"
+            [class.error]="orderForm.get('deliveryAddress')?.invalid && orderForm.get('deliveryAddress')?.touched"
+          ></textarea>
+          <div class="error-message" *ngIf="orderForm.get('deliveryAddress')?.invalid && orderForm.get('deliveryAddress')?.touched">
+            Please enter a valid delivery address (minimum 10 characters)
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="specialInstructions">Special Instructions (Optional)</label>
+          <textarea
+            id="specialInstructions"
+            formControlName="specialInstructions"
+            placeholder="Any special instructions for delivery?"
+            rows="2"
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="router.navigate(['/cart'])"
+          >
+            Back to Cart
+          </button>
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="orderForm.invalid || loading"
+          >
+            <span *ngIf="!loading">Place Order</span>
+            <span *ngIf="loading" class="loading-spinner"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div class="success-message" *ngIf="success">
+    <div class="success-content">
+      <i class="fas fa-check-circle"></i>
+      <h2>Order Placed Successfully!</h2>
+      <p>Redirecting to your orders...</p>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+</div> 

@@ -1,0 +1,44 @@
+<div class="cart-container">
+  <h1>Shopping Cart</h1>
+
+  <div *ngIf="cartItems.length === 0" class="empty-cart">
+    <p>Your cart is empty</p>
+    <a routerLink="/restaurants" class="continue-shopping">Continue Shopping</a>
+  </div>
+
+  <div *ngIf="cartItems.length > 0" class="cart-content">
+    <div class="cart-items">
+      <div *ngFor="let cartItem of cartItems" class="cart-item">
+        <img [src]="cartItem.imageUrl" [alt]="cartItem.name" class="item-image">
+        <div class="item-details">
+          <h3>{{ cartItem.name }}</h3>
+          <p class="restaurant">{{ cartItem.restaurantName }}</p>
+          <div class="quantity-controls">
+            <button (click)="updateQuantity(cartItem.id, cartItem.quantity - 1)">-</button>
+            <span>{{ cartItem.quantity }}</span>
+            <button (click)="updateQuantity(cartItem.id, cartItem.quantity + 1)">+</button>
+          </div>
+          <p class="price">${{ cartItem.price * cartItem.quantity }}</p>
+        </div>
+        <button class="remove-btn" (click)="removeItem(cartItem.id)">×</button>
+      </div>
+    </div>
+
+    <div class="cart-summary">
+      <h2>Order Summary</h2>
+      <div class="summary-item">
+        <span>Subtotal</span>
+        <span>${{ subtotal }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Delivery Fee</span>
+        <span>$2.99</span>
+      </div>
+      <div class="summary-item total">
+        <span>Total</span>
+        <span>${{ total }}</span>
+      </div>
+      <button class="checkout-btn">Proceed to Checkout</button>
+    </div>
+  </div>
+</div> 

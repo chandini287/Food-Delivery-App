@@ -1,0 +1,12 @@
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\FoodDeliveryAPI.exe
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\FoodDeliveryAPI.dll
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\Microsoft.OpenApi.dll
+C:\Users\avnmu\OneDrive\Desktop\final-project\FoodDeliveryAPI\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

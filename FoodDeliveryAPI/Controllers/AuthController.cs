@@ -1,45 +1,62 @@
+using BCrypt.Net;
+using FoodDeliveryAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System;
-using System.Collections.Generic;
+using FoodDeliveryAPI.Data;
 
 [ApiController]
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
-    private static List<User> users = new List<User>();
+    private readonly ApplicationDbContext _context;
+    private readonly IConfiguration _configuration;
+
+    public AuthController(ApplicationDbContext context, IConfiguration configuration)
+    {
+        _context = context;
+        _configuration = configuration;
+    }
 
     [HttpPost("register")]
-    public IActionResult Register([FromBody] User user)
+    public async Task<IActionResult> Register([FromBody] User user)
     {
-        if (users.Exists(u => u.Email == user.Email))
+        if (await _context.Users.AnyAsync(u => u.Email == user.Email))
         {
             return BadRequest(new { message = "User already exists!" });
         }
 
-        users.Add(user);
+        // Hash password before storing
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
         return Ok(new { message = "User registered successfully!" });
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var user = users.Find(u => u.Email == request.Email && u.Password == request.Password);
-        if (user == null)
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
         {
             return Unauthorized(new { message = "Invalid credentials" });
         }
 
-        // 🔹 Generate JWT Token
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes("YourSuperSecretKey"); // Replace with a real secret key
+        var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"] ?? throw new InvalidOperationException("SecretKey not configured."));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, user.Email) }),
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role ?? "User")
+            }),
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
@@ -54,19 +71,3 @@ public class AuthController : ControllerBase
         });
     }
 }
-
-// User Model
-public class User
-{
-    public string FullName { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-}
-
-// Login Model
-public class LoginRequest
-{
-    public string Email { get; set; }
-    public string Password { get; set; }
-}
-

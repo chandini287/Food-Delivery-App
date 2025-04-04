@@ -1,58 +1,49 @@
 using FoodDeliveryAPI.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// **Database Connection (SQLite)**
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// 🔗 MySQL connection
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString)
-);
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
-// **Enable CORS**
-builder.Services.AddCors(options =>
+// 🔐 JWT Authentication
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+builder.Services.AddAuthentication(options =>
 {
-    options.AddPolicy("AllowAngularApp",
-        policy => policy.WithOrigins("http://localhost:4200")
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
+    };
 });
 
-// **Authentication & JWT**
-var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? "default_secret");
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidateAudience = true,
-            ValidAudience = jwtSettings["Audience"],
-            ValidateLifetime = true
-        };
-    });
-
-builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-// **Build the App**
 var app = builder.Build();
 
-// **Middleware**
-app.UseCors("AllowAngularApp");
-app.UseRouting();
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseRouting(); // 👈 required!
+
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();
 
+app.MapControllers();
 app.Run();

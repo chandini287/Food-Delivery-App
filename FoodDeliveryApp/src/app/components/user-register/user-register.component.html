@@ -44,28 +44,15 @@
       </div>
 
       <div class="form-group">
-        <label for="address">Address</label>
-        <textarea 
-          id="address" 
-          formControlName="address" 
-          [class.error]="registerForm.get('address')?.invalid && registerForm.get('address')?.touched"
-          placeholder="Enter your delivery address"
-          rows="3"></textarea>
-        <div class="error-message" *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched">
-          {{ getErrorMessage('address') }}
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
+        <label for="confirmPassword">Confirm Password</label>
         <input 
-          type="tel" 
-          id="phone" 
-          formControlName="phone" 
-          [class.error]="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched"
-          placeholder="Enter your phone number">
-        <div class="error-message" *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
-          {{ getErrorMessage('phone') }}
+          type="password" 
+          id="confirmPassword" 
+          formControlName="confirmPassword" 
+          [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+          placeholder="Confirm your password">
+        <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+          {{ getErrorMessage('confirmPassword') }}
         </div>
       </div>
 

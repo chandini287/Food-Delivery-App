@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -26,9 +26,21 @@ export class UserRegisterComponent {
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      address: ['', [Validators.required, Validators.minLength(10)]],
-      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
+      confirmPassword: ['', [Validators.required]]
+    }, {
+      validators: this.passwordMatchValidator
     });
+  }
+
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+    return null;
   }
 
   onSubmit(): void {
@@ -41,8 +53,8 @@ export class UserRegisterComponent {
         name: formValue.name,
         email: formValue.email,
         password: formValue.password,
-        address: formValue.address,
-        phone: formValue.phone
+        address: '', // Providing empty string as it's required by the interface
+        phone: ''   // Providing empty string as it's required by the interface
       }).subscribe({
         next: (response) => {
           this.successMessage = response.message || 'Registration successful!';
@@ -85,8 +97,8 @@ export class UserRegisterComponent {
       const minLength = control.errors?.['minlength'].requiredLength;
       return `Minimum length is ${minLength} characters`;
     }
-    if (control.hasError('pattern')) {
-      return 'Please enter a valid 10-digit phone number';
+    if (control.hasError('passwordMismatch')) {
+      return 'Passwords do not match';
     }
     return '';
   }

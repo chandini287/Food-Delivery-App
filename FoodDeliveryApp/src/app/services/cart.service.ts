@@ -80,4 +80,4 @@ export class CartService {
   getItemCount(): number {
     return this.cartItems.value.reduce((count, item) => count + item.quantity, 0);
   }
-} 
+}  

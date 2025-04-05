@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService, CartItem } from '../../services/cart.service';
-import { OrderService, Order } from '../../services/order.service';
+import { OrderService, Order } from '../../services/order.service';  
 
 @Component({
   selector: 'app-order',

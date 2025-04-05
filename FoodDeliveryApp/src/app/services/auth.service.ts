@@ -1,8 +1,8 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 export interface AuthResponse {
   message: string;
@@ -15,18 +15,19 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
-  fullName: string;
+  name: string;
   email: string;
   password: string;
-  // Add other fields like address/phone if needed
+  address: string;
+  phone: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5181/api/auth'; // ✅ Update this port if your backend differs
   private helper = new JwtHelperService();
+  private apiUrl = 'http://localhost:5089/api/auth';
   private isBrowser: boolean;
 
   constructor(
@@ -40,7 +41,6 @@ export class AuthService {
     return this.isBrowser ? localStorage : null;
   }
 
-  // ========== LOGIN ==========
   login(email: string, password: string): Observable<AuthResponse> {
     const request: LoginRequest = { email, password };
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request)
@@ -53,7 +53,6 @@ export class AuthService {
       );
   }
 
-  // ========== REGISTER ==========
   register(request: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, request)
       .pipe(
@@ -65,28 +64,27 @@ export class AuthService {
       );
   }
 
-  // ========== LOGOUT ==========
   logout(): void {
     if (this.isBrowser) {
       localStorage.removeItem('token');
     }
   }
 
-  // ========== CHECK AUTH ==========
   isAuthenticated(): boolean {
-    const token = this.getToken();
-    return token ? !this.helper.isTokenExpired(token) : false;
+    const storage = this.getStorage();
+    return storage ? !!storage.getItem('token') : false;
   }
 
   getToken(): string | null {
-    return this.getStorage()?.getItem('token') || null;
+    const storage = this.getStorage();
+    return storage ? storage.getItem('token') : null;
   }
 
   getUserId(): number | null {
     const token = this.getToken();
     if (!token) return null;
-
-    const decoded = this.helper.decodeToken(token);
-    return decoded?.nameid ? parseInt(decoded.nameid) : null;
+    
+    const decodedToken = this.helper.decodeToken(token);
+    return decodedToken ? parseInt(decodedToken.nameid) : null;
   }
 }

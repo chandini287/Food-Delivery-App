@@ -2,18 +2,18 @@
   <div class="register-card">
     <h2>Create Account</h2>
     <p class="subtitle">Join our food delivery community</p>
- 
+
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
       <div class="form-group">
-        <label for="username">Username</label>
+        <label for="name">Full Name</label>
         <input 
           type="text" 
-          id="username" 
-          formControlName="username" 
-          [class.error]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
-          placeholder="Choose a username">
-        <div class="error-message" *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
-          {{ getErrorMessage('username') }}
+          id="name" 
+          formControlName="name" 
+          [class.error]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+          placeholder="Enter your full name">
+        <div class="error-message" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+          {{ getErrorMessage('name') }}
         </div>
       </div>
 
@@ -44,15 +44,28 @@
       </div>
 
       <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
+        <label for="address">Address</label>
+        <textarea 
+          id="address" 
+          formControlName="address" 
+          [class.error]="registerForm.get('address')?.invalid && registerForm.get('address')?.touched"
+          placeholder="Enter your delivery address"
+          rows="3"></textarea>
+        <div class="error-message" *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched">
+          {{ getErrorMessage('address') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
         <input 
-          type="password" 
-          id="confirmPassword" 
-          formControlName="confirmPassword" 
-          [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
-          placeholder="Confirm your password">
-        <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
-          {{ getErrorMessage('confirmPassword') }}
+          type="tel" 
+          id="phone" 
+          formControlName="phone" 
+          [class.error]="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched"
+          placeholder="Enter your phone number">
+        <div class="error-message" *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+          {{ getErrorMessage('phone') }}
         </div>
       </div>
 

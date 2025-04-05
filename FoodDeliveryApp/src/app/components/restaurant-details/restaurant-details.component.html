@@ -20,7 +20,7 @@
           {{ restaurant.rating }}
         </div>
         <p class="delivery-time">Delivery in {{ restaurant.deliveryTime }}</p>
-        <p class="min-order">Min. Order: ${{ restaurant.minimumOrder }}</p>
+        <p class="min-order">Min. Order: ₹{{ restaurant.minimumOrder }}</p>
         <p class="description">{{ restaurant.description }}</p>
       </div>
     </div>
@@ -34,7 +34,7 @@
             <h3>{{ item.name }}</h3>
             <p class="description">{{ item.description }}</p>
             <div class="price-action">
-              <span class="price">${{ item.price }}</span>
+              <span class="price">₹{{ item.price }}</span>
               <div class="cart-controls">
                 <div *ngIf="isInCart(item.id)" class="quantity-controls">
                   <button (click)="updateQuantity(item, false)" class="quantity-btn">-</button>

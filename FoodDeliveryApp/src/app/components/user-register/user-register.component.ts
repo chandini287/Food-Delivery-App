@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './user-register.component.html',
   styleUrls: ['./user-register.component.css']
 })
@@ -33,6 +34,9 @@ export class UserRegisterComponent {
   onSubmit(): void {
     if (this.registerForm.valid) {
       const formValue = this.registerForm.value;
+      this.errorMessage = null;
+      this.successMessage = null;
+
       this.authService.register({
         name: formValue.name,
         email: formValue.email,
@@ -41,30 +45,47 @@ export class UserRegisterComponent {
         phone: formValue.phone
       }).subscribe({
         next: (response) => {
-          this.successMessage = response.message;
+          this.successMessage = response.message || 'Registration successful!';
+          console.log('Registration successful:', response);
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 2000);
         },
-        error: (error) => {
-          this.errorMessage = error.error.message || 'Registration failed. Please try again.';
+        error: (error: HttpErrorResponse) => {
+          console.error('Registration error:', error);
+          if (error.status === 0) {
+            this.errorMessage = 'Unable to connect to the server. Please check your internet connection.';
+          } else if (error.status === 400) {
+            this.errorMessage = 'Invalid registration data. Please check your information.';
+          } else if (error.status === 409) {
+            this.errorMessage = 'Email already registered. Please use a different email.';
+          } else if (error.error?.message) {
+            this.errorMessage = error.error.message;
+          } else {
+            this.errorMessage = 'Registration failed. Please try again.';
+          }
         }
       });
+    } else {
+      this.errorMessage = 'Please fill in all required fields correctly.';
     }
   }
 
   getErrorMessage(controlName: string): string {
     const control = this.registerForm.get(controlName);
-    if (control?.hasError('required')) {
+    if (!control) return '';
+
+    if (control.hasError('required')) {
       return 'This field is required';
     }
-    if (control?.hasError('email')) {
+    if (control.hasError('email')) {
       return 'Please enter a valid email address';
     }
-    if (control?.hasError('minlength')) {
-      return `Minimum length is ${control.errors?.['minlength'].requiredLength} characters`;
+    if (control.hasError('minlength')) {
+      const minLength = control.errors?.['minlength'].requiredLength;
+      return `Minimum length is ${minLength} characters`;
     }
-    if (control?.hasError('pattern')) {
+    if (control.hasError('pattern')) {
       return 'Please enter a valid 10-digit phone number';
     }
     return '';

@@ -18,7 +18,7 @@
             <span>{{ cartItem.quantity }}</span>
             <button (click)="updateQuantity(cartItem.id, cartItem.quantity + 1)">+</button>
           </div>
-          <p class="price">${{ cartItem.price * cartItem.quantity }}</p>
+          <p class="price">₹{{ cartItem.price * cartItem.quantity }}</p>
         </div>
         <button class="remove-btn" (click)="removeItem(cartItem.id)">×</button>
       </div>
@@ -28,17 +28,81 @@
       <h2>Order Summary</h2>
       <div class="summary-item">
         <span>Subtotal</span>
-        <span>${{ subtotal }}</span>
+        <span>₹{{ subtotal }}</span>
       </div>
       <div class="summary-item">
         <span>Delivery Fee</span>
-        <span>$2.99</span>
+        <span>₹20</span>
       </div>
       <div class="summary-item total">
         <span>Total</span>
-        <span>${{ total }}</span>
+        <span>₹{{ total }}</span>
       </div>
-      <button class="checkout-btn">Proceed to Checkout</button>
+
+      <div class="delivery-address-section">
+        <button class="checkout-btn" (click)="toggleAddressForm()">
+          {{ showAddressForm ? 'Hide Address Form' : 'Add Delivery Address' }}
+        </button>
+
+        <form *ngIf="showAddressForm" [formGroup]="deliveryAddressForm" (ngSubmit)="onSubmit()" class="address-form">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" formControlName="fullName" placeholder="Enter your full name">
+            <div *ngIf="deliveryAddressForm.get('fullName')?.invalid && deliveryAddressForm.get('fullName')?.touched" class="error-message">
+              Please enter a valid name (minimum 3 characters)
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="mobileNumber">Mobile Number</label>
+            <input type="tel" id="mobileNumber" formControlName="mobileNumber" placeholder="Enter 10-digit mobile number">
+            <div *ngIf="deliveryAddressForm.get('mobileNumber')?.invalid && deliveryAddressForm.get('mobileNumber')?.touched" class="error-message">
+              Please enter a valid 10-digit mobile number
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="pincode">Pincode</label>
+            <input type="text" id="pincode" formControlName="pincode" placeholder="Enter 6-digit pincode">
+            <div *ngIf="deliveryAddressForm.get('pincode')?.invalid && deliveryAddressForm.get('pincode')?.touched" class="error-message">
+              Please enter a valid 6-digit pincode
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="addressLine1">Address Line 1</label>
+            <input type="text" id="addressLine1" formControlName="addressLine1" placeholder="House/Flat No., Building, Street">
+            <div *ngIf="deliveryAddressForm.get('addressLine1')?.invalid && deliveryAddressForm.get('addressLine1')?.touched" class="error-message">
+              Please enter your address
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="landmark">Landmark</label>
+            <input type="text" id="landmark" formControlName="landmark" placeholder="Nearby landmark (optional)">
+          </div>
+
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" formControlName="city" placeholder="Enter your city">
+            <div *ngIf="deliveryAddressForm.get('city')?.invalid && deliveryAddressForm.get('city')?.touched" class="error-message">
+              Please enter your city
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" id="state" formControlName="state" placeholder="Enter your state">
+            <div *ngIf="deliveryAddressForm.get('state')?.invalid && deliveryAddressForm.get('state')?.touched" class="error-message">
+              Please enter your state
+            </div>
+          </div>
+
+          <button type="submit" class="proceed-btn" [disabled]="!deliveryAddressForm.valid">
+            Proceed to Checkout
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div> 

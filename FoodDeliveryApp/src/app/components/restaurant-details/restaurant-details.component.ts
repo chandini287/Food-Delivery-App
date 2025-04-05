@@ -6,7 +6,7 @@ import { CartService } from '../../services/cart.service';
 import { Restaurant } from '../../models/restaurant.model';
 import { FoodItem } from '../../models/food-item.model';
 import { CartItem } from '../../services/cart.service';
-
+ 
 @Component({
   selector: 'app-restaurant-details',
   standalone: true,

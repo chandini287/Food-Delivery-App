@@ -3,14 +3,26 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
+
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['localhost:5089'],
+        disallowedRoutes: []
+      }
+    }),
     RouterModule.forRoot([
       { path: '', loadComponent: () => import('./components/landing/landing.component').then(m => m.LandingComponent) },
       { path: 'restaurants', loadComponent: () => import('./components/restaurant-list/restaurant-list.component').then(m => m.RestaurantListComponent) },

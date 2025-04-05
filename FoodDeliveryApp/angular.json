@@ -16,7 +16,7 @@
         "@schematics/angular:pipe": {
           "standalone": false
         }
-      },
+      }, 
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
